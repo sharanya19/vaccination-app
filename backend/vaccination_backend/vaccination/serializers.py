@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Location, Centre, Patient, VaccinationSlot
+from .models import Location, Centre, Patient, VaccinationSlot,AddedRecord
 
 class VaccinationSlotSerializer(serializers.ModelSerializer):
     patient = serializers.PrimaryKeyRelatedField(queryset=Patient.objects.all())
@@ -39,3 +39,8 @@ class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
         fields = ['id', 'country', 'state', 'city', 'centres']
+
+class AddedRecordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AddedRecord
+        fields = '__all__'        
