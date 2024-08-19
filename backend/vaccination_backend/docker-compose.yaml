@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  django:
+    build:
+      context: .  # Build from the current directory
+    container_name: django
+    depends_on:
+      - db
+    environment:
+      DJANGO_SETTINGS_MODULE: vaccination_backend.settings
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app  # Sync code changes for development
+    command: >
+      bash -c "
+      ./wait-for-it.sh db:5432 -- 
+      gunicorn vaccination_backend.wsgi:application --bind 0.0.0.0:8000
+      "
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"  # Map pgAdmin port to localhost
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin      
+
+volumes:
+  postgres_data:
+  pgadmin_data:

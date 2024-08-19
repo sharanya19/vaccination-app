@@ -22,3 +22,21 @@ class VaccinationSlot(models.Model):
     time = models.TimeField()
     available_slots = models.IntegerField()
     patient = models.ForeignKey(Patient, related_name='vaccination_slots', on_delete=models.CASCADE, null=True, blank=True)
+
+
+class AddedRecord(models.Model):
+    location = models.CharField(max_length=255)
+    locationState = models.CharField(max_length=255)
+    locationCountry = models.CharField(max_length=255)
+    centre = models.CharField(max_length=255)
+    centreAddress = models.CharField(max_length=255)
+    patient = models.CharField(max_length=255)
+    patientAge = models.CharField(max_length=10)
+    patientContact = models.CharField(max_length=255)
+    slot = models.CharField(max_length=255)
+    slotDate = models.DateField()
+    slotTime = models.TimeField()
+    availableSlots = models.CharField(max_length=10)
+
+    def __str__(self):
+        return f"{self.location} - {self.centre} - {self.patient}"

@@ -1,7 +1,7 @@
 from rest_framework import viewsets
-from .models import Location, Centre, Patient, VaccinationSlot
+from .models import Location, Centre, Patient, VaccinationSlot,AddedRecord
 from django_filters.rest_framework import DjangoFilterBackend
-from .serializers import LocationSerializer, CentreSerializer, PatientSerializer, VaccinationSlotSerializer
+from .serializers import LocationSerializer, CentreSerializer, PatientSerializer, VaccinationSlotSerializer, AddedRecordSerializer
 from rest_framework.permissions import IsAuthenticated
 
 class LocationViewSet(viewsets.ModelViewSet):
@@ -40,3 +40,10 @@ class VaccinationSlotViewSet(viewsets.ModelViewSet):
     queryset = VaccinationSlot.objects.all()
     serializer_class = VaccinationSlotSerializer
     permission_classes = [IsAuthenticated]
+
+
+class AddedRecordViewSet(viewsets.ModelViewSet):
+    queryset = AddedRecord.objects.all()
+    serializer_class = AddedRecordSerializer
+    permission_classes = [IsAuthenticated]
+  
